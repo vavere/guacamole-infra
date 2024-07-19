@@ -24,35 +24,9 @@ services:
       POSTGRES_DATABASE: guacamole
       POSTGRES_PASSWORD: secret
       POSTGRES_USER: guacamole
-      HEADER_ENABLED: true
-      HTTP_AUTH_HEADER: REMOTE_USER
     depends_on:
     - guacd
     - db
-
-  auth:
-    image: quay.io/oauth2-proxy/oauth2-proxy:v7.1.1
-    command:
-    - --show-debug-on-error
-    - --email-domain=*
-    - --cookie-secure=false
-    - --http-address=0.0.0.0:4180
-    - --set-xauthrequest
-    - --provider=github
-    - --provider-display-name=Gitea
-    - --redirect-url=http://localhost:8080/oauth2/callback
-    - --whitelist-domain=localhost:8080
-    - --login-url=https://git.kase.gov.lv/login/oauth/authorize
-    - --redeem-url=https://git.kase.gov.lv/login/oauth/access_token
-    - --validate-url=https://git.kase.gov.lv/api/v1
-    - --custom-sign-in-logo=/var/oauth2/logo.png
-    - --footer=-
-    environment:
-      OAUTH2_PROXY_CLIENT_ID:
-      OAUTH2_PROXY_CLIENT_SECRET:
-      OAUTH2_PROXY_COOKIE_SECRET:
-    volumes:
-    - ./logo.png:/var/oauth2/logo.png:ro
 
   proxy:
     image: nginx
